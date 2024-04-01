@@ -20,14 +20,14 @@ public:
 };
 
 int main() { 
-    const int jum_input = 3;
+    const int jum_input = 10;
     string nama;
     int nomorHp;
    
     Data data_baru[jum_input];
     int n = 0;
     
-    cout << "\n Masukkan Kontak (Maksimal 3 Kontak)\n\n";
+    cout << "\n Masukkan Kontak (Maksimal 10 Kontak)\n\n";
     for (int i = 0; i < jum_input; i++) {
         cout << " Masukkan Nama Kontak ke-" << i + 1 << ": ";
         getline(cin, nama);
