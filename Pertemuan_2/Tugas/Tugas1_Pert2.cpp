@@ -2,7 +2,7 @@
 #include <algorithm>
 using namespace std;
 
-int part(int ar[], int low, int high) {
+int partition(int ar[], int low, int high) {
     int pivot = ar[high];
     int i = low - 1;
 
@@ -16,9 +16,9 @@ int part(int ar[], int low, int high) {
     return i + 1;
 }
 
-void qs(int rr[], int low, int high) {
+void qsort(int rr[], int low, int high) {
     if (low < high) {
-        int pi = part(rr, low, high);
+        int pivot = partition(rr, low, high);
 
         cout << "[ ";
         for (int i = 0; i < 10; i++) {
@@ -27,13 +27,13 @@ void qs(int rr[], int low, int high) {
         cout << " ]";
         cout << endl;
 
-        qs(rr, low, pi - 1);
-        qs(rr, pi + 1, high);
+        qsort(rr, low, pivot - 1);
+        qsort(rr, pivot + 1, high);
     }
 }
 
 int main() {
-    int ar[100];
+    int ar[10];
     
     cout << "masukkan 10 data: [ ";
     for (int i = 0; i < 10; i++) {
@@ -50,7 +50,7 @@ int main() {
     cout << "]" << endl << endl;
 
     cout << "Quick Sort: " << endl;
-    qs(ar, 0, 10 - 1);
+    qsort(ar, 0, 10 - 1);
 
     return 0;
 }
