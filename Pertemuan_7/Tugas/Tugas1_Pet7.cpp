@@ -1,46 +1,50 @@
 #include <iostream>
-#include <string>
-#include <algorithm>
+#include <algorithm> // Header <algorithm> untuk menggunakan fungsi pengurutan
 
 using namespace std;
 
-// Struktur Rak Buku
-struct Rakbuku {
-    string nama;
-    int urutan;
-};
+const int N = 100;
+string judul[N]; // Menggunakan array string untuk menyimpan judul buku
 
-// Fungsi pencarian sequential
-int cariRakbuku(const Rakbuku daftar[], int n, string rakbukuDicari) {
-    for (int i = 0; i < n; i++) {
-        if (daftar[i].nama == rakbukuDicari) {
-            return daftar[i].urutan; // Mengembalikan nomor rak yang ditemukan
-        }
+// Fungsi untuk melakukan binary search
+int binarySearch(string x, int l, int r) {
+    while (r >= l) {
+        int mid = l + (r - l) / 2; 
+        if (judul[mid] == x)
+            return mid;
+
+        if (judul[mid] > x)
+            r = mid - 1;
+        else
+            l = mid + 1;
     }
-    return -1; // Mengembalikan -1 jika rak tidak ditemukan
+    return -1;
 }
 
 int main() {
-    // Array dari struktur Rak Buku Di Perpustakaan
-    Rakbuku daftarRakbuku[5] = {
-        {"Algoritma Pemrograman", 1},
-        {"Statistika", 2},
-        {"Elektronika Dasar", 3},
-        {"Jaringan Komputer", 4},
-        {"Matematika", 5}
-    };
+    int n;
+    cout << "Masukkan Jumlah Buku: ";
+    cin >> n;
 
-    // Pencarian buku pada Rak Buku
-    string rakbukuDicari;
-    cout << " Masukkan Judul Buku yang ingin dicari: ";
-    getline(cin, rakbukuDicari);
+    cout << "Masukkan Judul Buku: " << endl;
+    for (int i = 0; i < n; i++) {
+        cin.ignore(); 
+        getline(cin, judul[i]); // Input judul buku
+    }
 
-    int indeksRak = cariRakbuku(daftarRakbuku, 5, rakbukuDicari);
+    // Mengurutkan judul buku
+    sort(judul, judul + n);
 
-    if (indeksRak != -1) {
-        cout << " Buku dengan judul \"" << rakbukuDicari << "\" berada di rak nomor " << indeksRak << endl;
+    string judulDicari;
+    cout << "Masukkan Judul Buku yang dicari: ";
+    cin.ignore();
+    getline(cin, judulDicari);
+
+    int hasil = binarySearch(judulDicari, 0, n - 1);
+    if (hasil == -1) {
+        cout << "Buku Tidak Ditemukan" << endl;
     } else {
-        cout << " Buku dengan judul \"" << rakbukuDicari << "\" tidak ditemukan" << endl;
+        cout << "Buku Ditemukan Pada Indeks " << hasil << endl;
     }
 
     return 0;
