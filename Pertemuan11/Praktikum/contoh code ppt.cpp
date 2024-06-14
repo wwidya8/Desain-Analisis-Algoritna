@@ -1,59 +1,52 @@
 #include <iostream>
+#include <climits> // untuk INT_MAX
 using namespace std;
 
-const int INF = INT_MAX;	
-
-int charToIndex(char node) {
-    return node - 'A'; 			
-}
-
-char indexToChar(int index) {
-    return 'A' + index; 	
-}
-
-int miniDist(int distance[], bool Tset[])			
+int miniDist(int distance[], bool Tset[], int n)
 {
-	int minimum = INF, ind;																
-    for(int k = 0; k < 6; k++)						
-	{
-        if(!Tset[k] && distance[k] <= minimum) {	
-            minimum = distance[k];					
+    int minimum = INT_MAX, ind;
+              
+    for(int k = 0; k < n; k++)
+    {
+        if(Tset[k] == false && distance[k] <= minimum)      
+        {
+            minimum = distance[k];
             ind = k;
         }
-    }							
+    }
     return ind;
 }
 
-void DijkstraAlgo(int graph[6][6], char srcNode, char destNode)																																
+void DijkstraAlgo(int graph[6][6], int src, int dest, int n)  
 {
-	//Inisialisasi
-    int src = charToIndex(srcNode);
-    int dest = charToIndex(destNode);
-    int distance[6];
-    bool Tset[6];
+    int distance[n]; 	                         
+    bool Tset[n];	
     
-    for(int k = 0; k < 6; k++) {
-        distance[k] = INF;
+    for(int k = 0; k < n; k++)
+    {
+        distance[k] = INT_MAX;
         Tset[k] = false;    
     }
-
-    distance[src] = 0; 
     
-	//Loop Utama
-    for(int k = 0; k < 6; k++) {                           
-        int m = miniDist(distance, Tset); 
+    distance[src] = 0;                 
+    
+    for(int count = 0; count < n-1; count++)                           
+    {
+        int m = miniDist(distance, Tset, n); 
         Tset[m] = true;
-        for(int k = 0; k < 6; k++) {                  
-            if(!Tset[k] && graph[m][k] && distance[m] != INF && distance[m] + graph[m][k] < distance[k])
+        for(int k = 0; k < n; k++)                  
+        {
+            if(!Tset[k] && graph[m][k] && distance[m] != INT_MAX && distance[m] + graph[m][k] < distance[k])
                 distance[k] = distance[m] + graph[m][k];
         }
     }
-    cout << "Jarak dari simpul " << srcNode << " ke simpul " << destNode << " adalah " << distance[dest] << endl;
+    
+    cout << "Jarak dari simpul " << (char)(src + 65) << " ke simpul " << (char)(dest + 65) << " adalah: " << distance[dest] << endl;
 }
 
-int main() {
-
-    int graph[6][6]={
+int main(){
+    int n = 6; // jumlah simpul
+    int graph[6][6] = {
         {0, 1, 2, 0, 0, 0},
         {1, 0, 0, 5, 1, 0},
         {2, 0, 0, 2, 3, 0},
@@ -61,8 +54,8 @@ int main() {
         {0, 1, 3, 2, 0, 1},
         {0, 0, 0, 2, 1, 0}
     };
-    
-    cout << "Representasi matriks:" << endl;
+	
+	cout << "Representasi matriks:" << endl;
     cout << "    A -1- B" << endl;
     cout << "    |     | \\" << endl;
     cout << "   2|     5  1" << endl;
@@ -71,20 +64,18 @@ int main() {
     cout << "          |    /" << endl;
     cout << "          2  1" << endl;
     cout << "          | /" << endl;
-    cout << "          F" << endl<< endl;
-    
-    char sourceNode, destNode;
-    cout << "Masukkan simpul asal (A-F): ";
-    cin >> sourceNode;
-    
-    cout << "Masukkan simpul tujuan (A-F): ";
-    cin >> destNode;
+    cout << "          F" << endl << endl;
 
-    if(sourceNode < 'A' || sourceNode > 'F' || destNode < 'A' || destNode > 'F') {
-        cout << "Input simpul tidak valid!" << endl;
-        return 1;
-    }
+    char start, end;
+    cout << "Masukkan simpul awal (A-F): ";
+    cin >> start;
+    cout << "Masukkan simpul tujuan (A-F): ";
+    cin >> end;
     
-    DijkstraAlgo(graph, sourceNode, destNode);
-    return 0; 
+    int src = start - 'A';
+    int dest = end - 'A';
+    
+    DijkstraAlgo(graph, src, dest, n);
+    
+    return 0;
 }
